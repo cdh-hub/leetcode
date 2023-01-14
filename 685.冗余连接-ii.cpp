@@ -7,37 +7,43 @@
 // @lc code=start
 class Solution {
 private:
-    int findRoot(vector<int>& vec, int node) {
-        if (!vec[node]) return 0;
-        return vec[node] = vec[vec[node]] ? findRoot(vec, vec[node]) : vec[node];
+    int find(vector<int>& vec, int node) {
+        if (vec[node] == node) return node;
+        return vec[node] = find(vec, vec[node]);
+    }
+    void un(vector<int>& vec, int node1, int node2) {
+        vec[find(vec, vec[node1])] = find(vec, vec[node2]);
     }
 public:
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-        vector<int> union_find(edges.size()+1);
+        vector<int> root(edges.size()+1);
         vector<int> parent(edges.size()+1);
-        vector<int> res1, res2;
-        // bool hasCircle = false;
-        bool tag = false;
-        // int count = 0;
+        vector<int> res1, res2, res3;
+        for (int i = 0; i < root.size(); i++) {
+            root[i] = i;
+        }
+        bool conflict = false, circle = false;
         for (auto edge: edges) {
-            if (union_find[edge[1]] || findRoot(union_find, edge[0]) == edge[1]) {
-                // count++;
-                if (tag == true) {
-                    tag = false;
-                    break;
-                }
+            if (parent[edge[1]]) {
                 res1 = {edge[0], edge[1]};
                 res2 = {parent[edge[1]], edge[1]};
-                tag = true;
-                continue;
+                conflict = true;
             }
-            union_find[edge[1]] = union_find[edge[0]] ? union_find[edge[0]] : edge[0];
-            // if (union_find[edge[1]] == edge[1]) hasCircle = true;
-            parent[edge[1]] = edge[0];
+            else if (find(root, edge[0]) == find(root, edge[1])) {
+                res3 = {edge[0], edge[1]};
+                circle = true;
+            }
+            else {
+                parent[edge[1]] = edge[0];
+                un(root, edge[0], edge[1]);
+            }
         }
-        // if (edges.size() == 4 && edges[0][0] == 2 && edges[0][1] == 1 && edges[1][0] == 3 && edges[1][1] == 1 && edges[2][0] == 4 && edges[2][1] == 2 && edges[3][0] == 1 && edges[3][1] == 4) return res2;
-        return tag ? res1 : res2;
-        // return {count};
+        if (conflict && !circle) return res1;
+        else if (!conflict && circle) return res3;
+        else {
+            if (find(root, res1[0]) == find(root, res1[1])) return res1;
+            else return res2;
+        }
     }
 };
 // @lc code=end
