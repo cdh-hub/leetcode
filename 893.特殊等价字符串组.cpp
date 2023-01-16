@@ -6,37 +6,17 @@
 
 // @lc code=start
 class Solution {
-private:
-    bool isEqual(string s1, string s2) {
-        if (s1.size() != s2.size()) return false;
-        for (int i = 0; i < s1.size(); i++) {
-            if (s1[i] == s2[i]) continue;
-            for (int j = i+2; j < s1.size(); j+=2) {
-                if (s1[i] == s2[j]) swap(s2[i], s2[j]);
-            }
-            if (s1[i] != s2[i]) return false;
-        }
-        return true;
-    }
 public:
     int numSpecialEquivGroups(vector<string>& words) {
-        bool* record = new bool[words.size()];
+        unordered_set<long long> st;
         for (int i = 0; i < words.size(); i++) {
-            record[i] = false;
-        }
-        int count = 0;
-        for (int i = 0; i < words.size(); i++) {
-            if (record[i]) continue;
-            count++;
-            record[i] = true;
-            for (int j = i+1; j < words.size(); j++) {
-                if (record[j]) continue;
-                if (isEqual(words[i], words[j])) {
-                    record[j] = true;
-                }
+            long long a = 0;
+            for (int j = 0; j < words[i].size(); j++) {
+                a += 1LL << (words[i][j] - 'a' + 26 * (j & 1));
             }
+            st.insert(a);
         }
-        return count;
+        return st.size();
     }
 };
 // @lc code=end
