@@ -6,54 +6,58 @@
 
 // @lc code=start
 class Solution {
+private:
+    static bool increasing(pair<int, int> a, pair<int, int> b) {
+        if (a.first < b.first) return true;
+        if (a.first == b.first && a.second < b.second) return true;
+        return false; 
+    }
+    static bool descending(pair<int, int> a, pair<int, int> b) {
+        if (a.first > b.first) return true;
+        if (a.first == b.first && a.second < b.second) return true;
+        return false; 
+    }
 public:
     int oddEvenJumps(vector<int>& arr) {
         int n = arr.size();
-        vector<int> llmin(n, -1);
-        vector<int> lsmax(n, -1);
-        for (int i = 1; i < n; i++) {
-            int j = i - 1, maxnum = -1, minnum = 100010;
-            while (j >= 0 && arr[j] <= arr[i]) {
-                if (arr[j] > maxnum) {
-                    maxnum = arr[j];
-                    lsmax[i] = j;
-                }
-                j--;
-            }
-            if (j >= 0) {
-                while (lsmax[j] != -1 && arr[lsmax[j]] > arr[i]) {
-                    j = lsmax[j];
-                }
-                if (lsmax[j] == -1 && maxnum == -1 || lsmax[j] != -1 && arr[lsmax[j]] > maxnum) lsmax[i] = lsmax[j];
-            }
-            j = i - 1; 
-            while (j >= 0 && arr[j] >= arr[i]) {
-                if (arr[j] < minnum) {
-                    maxnum = arr[j];
-                    llmin[i] = j;
-                }
-                j--;
-            }
-            if (j >= 0) {
-                while (llmin[j] != -1 && arr[llmin[j]] < arr[i]) {
-                    j = llmin[j];
-                }
-                if (llmin[j] == -1 && minnum == -1 || llmin[j] != -1 && arr[llmin[j]] < minnum) llmin[i] = llmin[j];
-            }
+        int* odd = new int[n];
+        int* even = new int[n];
+        stack<int> stk;
+        memset(odd, -1, sizeof(int)*n); 
+        memset(even, -1, sizeof(int)*n);
+        vector<pair<int, int>> pairs;
+        for (int i = 0; i < n; i++) {
+            pairs.push_back(make_pair(arr[i], i));
         }
+        sort(pairs.begin(), pairs.end(), increasing);
+        for (auto p : pairs) {
+            while (!stk.empty() && stk.top() < p.second) {
+                odd[stk.top()] = p.second;
+                stk.pop();
+            }
+            stk.push(p.second);
+        }
+        sort(pairs.begin(), pairs.end(), descending);
+        for (auto p : pairs) {
+            while (!stk.empty() && stk.top() < p.second) {
+                even[stk.top()] = p.second;
+                stk.pop();
+            }
+            stk.push(p.second);
+        }
+        bool* oddbegin = new bool[n];
+        bool* evenbegin = new bool[n];
+        memset(oddbegin, 0, sizeof(bool)*n);
+        memset(evenbegin, 0, sizeof(bool)*n);
+        oddbegin[n-1] = true;
+        evenbegin[n-1] = true;
         int cnt = 1;
-        int k = n - 1;
-        bool tag = true;
-        while (tag && llmin[k] != -1 || !tag && lsmax[k] != -1) {
-            k = tag ? llmin[k] : lsmax[k];
-            tag = !tag;
-            cnt++;
-        }
-        tag = false;
-        while (tag && llmin[k] != -1 || !tag && lsmax[k] != -1) {
-            k = tag ? llmin[k] : lsmax[k];
-            tag = !tag;
-            cnt++;
+        for (int i = n-2; i >= 0; i--) {
+            if (odd[i] != -1) {
+                oddbegin[i] = evenbegin[odd[i]];
+                if (oddbegin[i]) cnt++;
+            }
+            if (even[i] != -1) evenbegin[i] = oddbegin[even[i]];
         }
         return cnt;
     }
