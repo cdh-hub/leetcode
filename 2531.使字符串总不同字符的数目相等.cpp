@@ -1,5 +1,10 @@
-#include<bits/stdc++.h>
-using namespace std;
+/*
+ * @lc app=leetcode.cn id=2531 lang=cpp
+ *
+ * [2531] 使字符串总不同字符的数目相等
+ */
+
+// @lc code=start
 class Solution {
 public:
     bool isItPossible(string word1, string word2) {
@@ -64,3 +69,5 @@ public:
         return false;
     }
 };
+// @lc code=end
+

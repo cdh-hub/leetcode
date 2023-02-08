@@ -1,5 +1,10 @@
-#include<bits/stdc++.h>
-using namespace std;
+/*
+ * @lc app=leetcode.cn id=2530 lang=cpp
+ *
+ * [2530] 执行 K 次操作后的最大分数
+ */
+
+// @lc code=start
 class Cmp {
 public:
     bool operator()(const int& a, const int& b) const {
@@ -24,10 +29,5 @@ public:
         return score;
     }
 };
+// @lc code=end
 
-int main() {
-    Solution* s = new Solution();
-    vector<int> a({1,10,3,3,3});
-    cout << s->maxKelements(a, 3);
-    return 0;
-}
