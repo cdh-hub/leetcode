@@ -8,7 +8,7 @@
             "name": "(gdb) 启动",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/2528.最大化城市的最小供电站数目.exe",
+            "program": "${workspaceFolder}/test.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
