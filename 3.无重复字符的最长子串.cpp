@@ -9,12 +9,14 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         int maxLen = 0;
-        unordered_map<char, int> map;
-        int left = -1;
-        for (int i = 0; i < s.size(); i++) {
-            if (map.count(s[i])) left = max(left, map[s[i]]);
-            maxLen = max(maxLen, i - left);
-            map[s[i]] = i;
+        unordered_set<char> set;
+        int left = 0;
+        for (int right = 0; right < s.size(); right++) {
+            while (set.count(s[right])) {
+                set.erase(s[left++]);
+            }
+            set.insert(s[right]);
+            maxLen = max(maxLen, right - left + 1);
         }
         return maxLen;
     }

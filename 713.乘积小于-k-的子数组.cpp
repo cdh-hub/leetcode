@@ -1,7 +1,6 @@
 // @before-stub-for-debug-begin
 #include <vector>
 #include <string>
-#include "commoncppproblem713.h"
 
 using namespace std;
 // @before-stub-for-debug-end
@@ -17,19 +16,15 @@ class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
         int mul = 1;
-        int i = 0, sum = 0;
+        int i = 0, ans = 0;
         for (int j = 0; j < nums.size(); j++) {
-            if (i < j) i = j;
-            while (i < nums.size() && mul * nums[i] < k) {
-                mul *= nums[i];
-                i++;
+            mul *= nums[j];
+            while (i <= j && mul >= k) {
+                mul /= nums[i++];
             }
-            if (i > j) {
-                sum += i - j;
-                mul /= nums[j];
-            }
+            ans += j - i + 1;
         }
-        return sum;
+        return ans;
     }
 };
 // @lc code=end

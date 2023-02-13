@@ -9,24 +9,26 @@ class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>> ans;
-        map<int, int> map;
-        int n = nums.size();
-        for (int i = 0; i < n; i++) {
-            map[nums[i]]++;
-        }
-        for (auto it1 = map.begin(); it1 != map.end(); it1++) {
-            int k1 = (*it1).first, v1 = (*it1).second;
-            for (auto it2 = it1; it2 != map.end(); it2++) {
-                int k2 = (*it2).first, v2 = (*it2).second;
-                int k3 = 0 - k1 - k2;
-                if (map.count(k3)) {
-                    int v3 = map[k3];
-                    if (k1 == k2 && k1 == k3 && v1 >= 3) ans.push_back(vector<int>(3, k1));
-                    else if (k1 == k2 && k2 < k3 && v1 >= 2) ans.push_back({k1,k2,k3});
-                    else if (k1 < k2 && k2 == k3 && v2 >= 2) ans.push_back({k1,k2,k3});
-                    else if (k1 < k2 && k2 < k3) ans.push_back({k1,k2,k3});
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size()-2; i++) {
+            int j = i+1, k = nums.size()-1;
+            while (j < k) {
+                int sum = nums[i]+nums[j]+nums[k];
+                if (sum == 0) {
+                    ans.push_back({nums[i], nums[j], nums[k]});
+                    while (j < k && nums[j] == nums[j+1]) j++;
+                    while (j < k && nums[k] == nums[k-1]) k--;
+                    j++;
+                    k--;
+                }
+                else if (sum < 0) {
+                    j++;
+                }
+                else {
+                    k--;
                 }
             }
+            while (i < nums.size()-1 && nums[i] == nums[i+1]) i++;
         }
         return ans;
     }
