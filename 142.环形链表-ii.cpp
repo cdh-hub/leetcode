@@ -16,22 +16,21 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        if (head == nullptr) return nullptr;
-        ListNode *fast = head, *slow = head;
-        do {
-            if (fast->next) fast = fast->next;
-            else return nullptr;
-            if (fast->next) fast = fast->next;
-            else return nullptr;
-            if (slow->next) slow = slow->next;
-            else return nullptr;
-        } while (fast != slow);
-        slow = head;
-        while (fast != slow) {
-            if (fast->next) fast = fast->next;
-            if (slow->next) slow = slow->next;
+        ListNode *slow = head, *fast = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next;
+            fast = fast->next;
+            if (slow == fast) {
+                fast = head;
+                while (slow != fast) {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return slow;
+            }
         }
-        return slow;
+        return nullptr;
     }
 };
 // @lc code=end
