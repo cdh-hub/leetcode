@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode.cn id=2563 lang=cpp
+ *
+ * [2563] 统计公平数对的数目
+ */
+
+// @lc code=start
 class Solution {
 public:
     long long countFairPairs(vector<int>& nums, int lower, int upper) {
@@ -21,3 +28,5 @@ public:
         return ans;
     }
 };
+// @lc code=end
+

@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode.cn id=2564 lang=cpp
+ *
+ * [2564] 子字符串异或查询
+ */
+
+// @lc code=start
 class Solution {
 public:
     vector<vector<int>> substringXorQueries(string s, vector<vector<int>>& queries) {
@@ -25,3 +32,5 @@ public:
         return ans;
     }
 };
+// @lc code=end
+

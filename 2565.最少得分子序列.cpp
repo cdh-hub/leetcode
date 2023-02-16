@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode.cn id=2565 lang=cpp
+ *
+ * [2565] 最少得分子序列
+ */
+
+// @lc code=start
 class Solution {
 public:
     int minimumScore(string s, string t) {
@@ -28,3 +35,5 @@ public:
         return minans;
     }
 };
+// @lc code=end
+

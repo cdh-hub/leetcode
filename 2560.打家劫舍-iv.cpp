@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode.cn id=2560 lang=cpp
+ *
+ * [2560] 打家劫舍 IV
+ */
+
+// @lc code=start
 class Solution {
 private:
     bool check(vector<int>& nums, int price, int k) {
@@ -28,3 +35,5 @@ public:
         return price1;
     }
 };
+// @lc code=end
+
