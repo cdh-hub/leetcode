@@ -9,31 +9,22 @@ class Solution {
 public:
     int maxProduct(vector<int>& nums) {
         int n = nums.size();
-        int dp1[n+1], dp2[n+1];
-        int maxDP1 = 0, maxNum = nums[0];
-        dp1[0] = 0;
-        dp2[0] = 0;
-        for (int i = 0; i < n; i++) {
-            maxNum = max(maxNum, nums[i]);
-            if (nums[i] == 0) {
-                dp1[i+1] = 0;
-                dp2[i+1] = 0;
-            }
-            else if (nums[i] > 0) {
-                if (dp1[i] > 0) dp1[i+1] = dp1[i] * nums[i];
-                else dp1[i+1] = nums[i];
-                maxDP1 = max(maxDP1, dp1[i+1]);
-                dp2[i+1] = dp2[i] * nums[i];
+        int dp[n][2];
+        dp[0][0] = nums[0];
+        dp[0][1] = nums[0];
+        int ans = nums[0];
+        for (int i = 1; i < n; i++) {
+            if (nums[i] >= 0) {
+                dp[i][0] = max(nums[i], dp[i-1][0] * nums[i]);
+                dp[i][1] = min(nums[i], dp[i-1][1] * nums[i]);
             }
             else {
-                if (dp1[i] > 0) dp2[i+1] = dp1[i] * nums[i];
-                else dp2[i+1] = nums[i];
-                dp1[i+1] = dp2[i] * nums[i];
-                maxDP1 = max(maxDP1, dp1[i+1]);
+                dp[i][0] = max(nums[i], dp[i-1][1] * nums[i]);
+                dp[i][1] = min(nums[i], dp[i-1][0] * nums[i]);
             }
+            ans = max(ans, dp[i][0]);
         }
-        if (maxDP1 == 0 && maxNum < 0) return maxNum;
-        return maxDP1;
+        return ans;
     }
 };
 // @lc code=end
