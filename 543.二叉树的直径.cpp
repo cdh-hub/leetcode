@@ -18,18 +18,18 @@
  */
 class Solution {
 private:
-    pair<int, int> helper(TreeNode* root) {
-        if (!root) return make_pair(-1, -1);
-        if (!root->left && !root->right) return make_pair(0, 0);
-        pair<int, int> l = helper(root->left);
-        pair<int, int> r = helper(root->right);
-        int height = max(l.first, r.first) + 1;
-        int pathLen =  max(max(l.second, r.second), l.first + r.first + 2);
-        return make_pair(height, pathLen);
+    int ans = 0;
+    int dfs(TreeNode* root) {
+        if (!root) return 0;
+        int l = dfs(root->left);
+        int r = dfs(root->right);
+        ans = max(ans, l + r);
+        return max(l, r) + 1;
     }
 public:
     int diameterOfBinaryTree(TreeNode* root) {
-        return helper(root).second;
+        dfs(root);
+        return ans;
     }
 };
 // @lc code=end
