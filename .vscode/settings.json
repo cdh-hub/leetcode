@@ -2,6 +2,8 @@
     "files.associations": {
         "vector": "cpp",
         "mutex": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "deque": "cpp",
+        "string": "cpp"
     }
 }
