@@ -13,18 +13,17 @@ public:
             sum += n;
         }
         if (sum & 1) return false;
-        int mid = sum >> 1;
-        unordered_set<int> set;
-        set.insert(0);
-        for (auto n: nums) {
-            vector<int> tmp;
-            for (auto s: set) {
-                if (s+n==mid) return true;
-                tmp.push_back(s+n);
+        sum >>= 1;
+        int n = nums.size();
+        bool dp[sum+1];
+        dp[0] = true;
+        for (int i = 1; i <= sum; i++) dp[i] = false;
+        for (int i = 0; i < n; i++) {
+            for (int j = sum; j >= nums[i]; j--) {
+                dp[j] = dp[j] || dp[j-nums[i]];
             }
-            for (auto s: tmp) set.insert(s);
         }
-        return false;
+        return dp[sum];
     }
 };
 // @lc code=end
